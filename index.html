@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SONU OS — Personal Productivity &amp; Performance System</title>
+  <meta name="description" content="SONU OS — real-time personal productivity and performance dashboard." />
+  <link rel="stylesheet" href="./css/styles.css" />
+  <link rel="stylesheet" href="./css/dashboard.css" />
+  <link rel="stylesheet" href="./css/responsive.css" />
+</head>
+<body>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="brand">
+        <div class="logo">SO</div>
+        <div>
+          <div class="name">SONU OS</div>
+          <div class="sub">Personal Productivity &amp; Performance System</div>
+        </div>
+      </div>
+      <h1>Welcome</h1>
+      <p class="lede">Track your day. See your progress. Build consistency.</p>
+      <div class="row gap-2" style="margin-top:12px;">
+        <a class="btn btn-primary" href="./login.html">Sign in</a>
+        <a class="btn" href="./register.html">Create account</a>
+      </div>
+      <p class="auth-foot">Real-time sync · Private per-user data · Free on GitHub Pages</p>
+    </div>
+  </div>
+
+  <script type="module">
+    // Redirect signed-in users straight to the dashboard.
+    import { auth, isFirebaseConfigMissing } from "./js/firebase.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    if (!isFirebaseConfigMissing()) {
+      onAuthStateChanged(auth, (u) => {
+        if (u) location.replace("./dashboard.html");
+      });
+    }
+  </script>
+</body>
+</html>

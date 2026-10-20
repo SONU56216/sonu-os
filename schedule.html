@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Schedule — SONU OS</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+  <link rel="stylesheet" href="./css/dashboard.css" />
+  <link rel="stylesheet" href="./css/responsive.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Primary">
+      <div class="brand">
+        <div class="logo">SO</div>
+        <div>
+          <div class="name">SONU OS</div>
+          <div class="sub">Productivity &amp; Performance</div>
+        </div>
+      </div>
+      <div class="nav-group-title">Workspace</div>
+      <a class="nav-link" data-nav="dashboard" href="./dashboard.html">Dashboard</a>
+      <a class="nav-link" data-nav="schedule" href="./schedule.html">Schedule</a>
+      <a class="nav-link" data-nav="analytics" href="./analytics.html">Analytics</a>
+      <a class="nav-link" data-nav="history" href="./history.html">History</a>
+      <a class="nav-link" data-nav="focus" href="./focus.html">Focus</a>
+      <div class="nav-group-title">Account</div>
+      <a class="nav-link" data-nav="profile" href="./profile.html">Profile</a>
+      <a class="nav-link" data-nav="settings" href="./settings.html">Settings</a>
+      <button class="nav-link" id="logoutBtn" type="button" style="text-align:left;width:100%;background:transparent;border:0;cursor:pointer;">Sign out</button>
+    </aside>
+    
+
+    <main class="main">
+      <header class="topbar">
+        <button class="hamburger" aria-label="Open menu">☰</button>
+        <div class="title">Schedule</div>
+        <div class="spacer"></div>
+        <div class="net-status"><span class="net-dot"></span><span class="net-text">Online</span></div>
+        <div class="clock" data-clock></div>
+        <button class="btn btn-sm btn-ghost" id="themeBtn" type="button">Theme</button>
+      </header>
+
+      <div class="content">
+        <div class="row items-center wrap" style="gap:12px;">
+          <h1 class="mt-0">Daily Schedule Builder</h1>
+          <div class="spacer"></div>
+          <div class="row gap-2">
+            <button class="btn" id="prevDayBtn" type="button">← Prev</button>
+            <input type="date" id="datePicker" style="width:auto;" />
+            <button class="btn" id="nextDayBtn" type="button">Next →</button>
+            <button class="btn" id="todayBtn" type="button">Today</button>
+          </div>
+        </div>
+
+        <div class="row wrap mt-3" style="align-items:flex-start;">
+          <div class="card" style="flex:2 1 520px; min-width:320px;">
+            <div class="card-head">
+              <h3 id="dayTitle">Schedule</h3>
+              <span class="hint" id="daySummary">—</span>
+              <div class="spacer"></div>
+              <button class="btn btn-sm btn-primary" id="addTaskBtn" type="button">+ Add task</button>
+            </div>
+            <div id="taskList" class="task-list" aria-live="polite"></div>
+            <div class="mt-2 row gap-2">
+              <button class="btn btn-ghost" id="dupPrevBtn" type="button">Duplicate previous day</button>
+              <button class="btn btn-ghost" id="importBtn" type="button">Import schedule</button>
+              <button class="btn btn-ghost" id="clearBtn" type="button">Clear this day</button>
+            </div>
+          </div>
+
+          <div class="card" style="flex:1 1 300px; min-width:260px;">
+            <div class="card-head"><h3>Timeline</h3></div>
+            <div class="timeline" id="timeline"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="./js/schedule-page.js"></script>
+</body>
+</html>

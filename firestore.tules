@@ -1,0 +1,146 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /* ---------- Helpers ---------- */
+    function signedIn() {
+      return request.auth != null;
+    }
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    /* Only allow the listed keys. Anything not in the list is rejected. */
+    function hasOnlyKeys(data, allowed) {
+      return data.keys().hasOnly(allowed);
+    }
+
+    /* Type checks */
+    function isString(v)     { return v is string; }
+    function isBool(v)       { return v is bool; }
+    function isInt(v)        { return v is int; }
+    function isNumber(v)     { return v is int || v is float; }
+    function isTimestamp(v)  { return v is timestamp; }
+    function isMap(v)        { return v is map; }
+    function isList(v)       { return v is list; }
+
+    function isShortString(v, max) {
+      return isString(v) && v.size() <= max;
+    }
+
+    /* "YYYY-MM-DD" */
+    function isDateKey(v) {
+      return isString(v) && v.matches("^[0-9]{4}-[0-9]{2}-[0-9]{2}$");
+    }
+
+    /* "HH:mm" 24h */
+    function isTimeHHmm(v) {
+      return isString(v) && v.matches("^([01][0-9]|2[0-3]):[0-5][0-9]$");
+    }
+
+    function isPriority(v) {
+      return v == "low" || v == "medium" || v == "high";
+    }
+
+    function isStreakRuleType(v) {
+      return v == "anyTaskCompleted" || v == "minPct50" || v == "minPct80";
+    }
+
+    /* ---------- users/{uid} ---------- */
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid)
+        && request.resource.data.displayName is string
+        && request.resource.data.displayName.size() >= 1
+        && request.resource.data.displayName.size() <= 60
+        && request.resource.data.createdAt == request.time;
+      allow update: if isOwner(uid)
+        && hasOnlyKeys(request.resource.data, [
+             "displayName", "photoURL", "intro", "goals", "theme",
+             "timeFormat", "timezone", "weekStart", "streakRule",
+             "focusDurations", "notifications", "updatedAt",
+             "totalTasksCompleted", "totalFocusMinutes",
+             "currentStreak", "longestStreak", "lastActiveDate",
+             "createdAt",
+           ])
+        /* createdAt is immutable */
+        && request.resource.data.createdAt == resource.data.createdAt;
+      allow delete: if isOwner(uid);
+
+      /* ---------- tasks/{taskId} ---------- */
+      match /tasks/{taskId} {
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid) && validTask(request.resource.data);
+        allow update: if isOwner(uid) && validTask(request.resource.data);
+        allow delete: if isOwner(uid);
+
+        function validTask(d) {
+          return d.title is string
+              && d.title.size() >= 1 && d.title.size() <= 120
+              && isShortString(d.description, 400)
+              && isShortString(d.category, 40)
+              && isDateKey(d.date)
+              && isTimeHHmm(d.startTime)
+              && isTimeHHmm(d.endTime)
+              && isPriority(d.priority)
+              && isBool(d.completed)
+              && (d.completedAt == null || isTimestamp(d.completedAt))
+              && isNumber(d.actualFocusMinutes)
+              && isShortString(d.notes, 400)
+              && isNumber(d.order)
+              && isTimestamp(d.createdAt)
+              && isTimestamp(d.updatedAt);
+        }
+      }
+
+      /* ---------- dailyRecords/{date} ---------- */
+      match /dailyRecords/{date} {
+        allow read: if isOwner(uid);
+        allow create, update: if isOwner(uid)
+          && isDateKey(request.resource.data.date)
+          && request.resource.data.date == date
+          && isInt(request.resource.data.completedTaskCount)
+          && isInt(request.resource.data.totalPlannedTaskCount)
+          && isInt(request.resource.data.completionPercentage)
+          && request.resource.data.completionPercentage >= 0
+          && request.resource.data.completionPercentage <= 100
+          && isNumber(request.resource.data.totalFocusMinutes)
+          && isBool(request.resource.data.activeDay)
+          && isTimestamp(request.resource.data.updatedAt);
+        allow delete: if isOwner(uid);
+      }
+
+      /* ---------- focusSessions/{sessionId} ---------- */
+      match /focusSessions/{sessionId} {
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid)
+          && hasOnlyKeys(request.resource.data, [
+               "taskId","plannedMinutes","actualMinutes","mode",
+               "startedAt","endedAt","completed","createdAt",
+             ])
+          && (request.resource.data.taskId == null || isString(request.resource.data.taskId))
+          && isNumber(request.resource.data.plannedMinutes)
+          && isNumber(request.resource.data.actualMinutes)
+          && request.resource.data.actualMinutes > 0
+          && (request.resource.data.mode == "focus"
+              || request.resource.data.mode == "shortBreak"
+              || request.resource.data.mode == "longBreak")
+          && isTimestamp(request.resource.data.startedAt)
+          && isTimestamp(request.resource.data.endedAt)
+          && isBool(request.resource.data.completed)
+          && request.resource.data.createdAt == request.time;
+        /* Sessions are append-only. No update/delete from the client. */
+      }
+
+      /* ---------- activityLogs/{logId} ---------- */
+      match /activityLogs/{logId} {
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid)
+          && hasOnlyKeys(request.resource.data, ["type","taskId","date","meta","createdAt"])
+          && isString(request.resource.data.type)
+          && request.resource.data.createdAt == request.time;
+        /* Append-only. No update/delete. */
+      }
+    }
+  }
+}

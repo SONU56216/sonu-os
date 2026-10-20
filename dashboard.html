@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard — SONU OS</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+  <link rel="stylesheet" href="./css/dashboard.css" />
+  <link rel="stylesheet" href="./css/responsive.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Primary">
+      <div class="brand">
+        <div class="logo">SO</div>
+        <div>
+          <div class="name">SONU OS</div>
+          <div class="sub">Productivity &amp; Performance</div>
+        </div>
+      </div>
+      <div class="nav-group-title">Workspace</div>
+      <a class="nav-link" data-nav="dashboard" href="./dashboard.html">Dashboard</a>
+      <a class="nav-link" data-nav="schedule" href="./schedule.html">Schedule</a>
+      <a class="nav-link" data-nav="analytics" href="./analytics.html">Analytics</a>
+      <a class="nav-link" data-nav="history" href="./history.html">History</a>
+      <a class="nav-link" data-nav="focus" href="./focus.html">Focus</a>
+      <div class="nav-group-title">Account</div>
+      <a class="nav-link" data-nav="profile" href="./profile.html">Profile</a>
+      <a class="nav-link" data-nav="settings" href="./settings.html">Settings</a>
+      <button class="nav-link" id="logoutBtn" type="button" style="text-align:left;width:100%;background:transparent;border:0;cursor:pointer;">Sign out</button>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="hamburger" aria-label="Open menu">☰</button>
+        <div class="title">Dashboard</div>
+        <div class="spacer"></div>
+        <div class="net-status" aria-live="polite">
+          <span class="net-dot"></span><span class="net-text">Online</span>
+        </div>
+        <div class="clock" data-clock aria-hidden="true">--:--:--</div>
+        <button class="btn btn-sm btn-ghost" id="themeBtn" type="button" title="Toggle theme">Theme</button>
+      </header>
+
+      <div class="content">
+        <div class="row items-center wrap" style="gap:16px;">
+          <div>
+            <h1 id="greeting">Hello</h1>
+            <div class="muted" data-today>—</div>
+          </div>
+          <div class="spacer"></div>
+          <div class="row gap-2">
+            <button class="btn" id="importBtn" type="button">Import schedule</button>
+            <a class="btn" href="./schedule.html">Open schedule</a>
+            <button class="btn btn-primary" id="addTaskBtn" type="button">+ Add task</button>
+          </div>
+        </div>
+
+        <section class="stat-grid mt-3" aria-label="Today's summary">
+          <div class="stat green">
+            <div class="label">Today's completion</div>
+            <div class="value" id="statPct">0%</div>
+            <div class="sub" id="statPctSub">No tasks planned yet</div>
+          </div>
+          <div class="stat">
+            <div class="label">Tasks done</div>
+            <div class="value"><span id="statDone">0</span><span class="muted" style="font-size:1rem;"> / <span id="statTotal">0</span></span></div>
+            <div class="sub">Completed / planned</div>
+          </div>
+          <div class="stat">
+            <div class="label">Remaining</div>
+            <div class="value" id="statRemaining">0</div>
+            <div class="sub">Still to finish today</div>
+          </div>
+          <div class="stat">
+            <div class="label">Focused time</div>
+            <div class="value" id="statFocus">0m</div>
+            <div class="sub">From focus sessions today</div>
+          </div>
+          <div class="stat">
+            <div class="label">Current streak</div>
+            <div class="value" id="statStreak">0</div>
+            <div class="sub">Days in a row active</div>
+          </div>
+          <div class="stat">
+            <div class="label">Longest streak</div>
+            <div class="value" id="statLongest">0</div>
+            <div class="sub">Personal best</div>
+          </div>
+        </section>
+
+        <section class="row wrap mt-3" style="align-items:flex-start;">
+          <div class="card" style="flex:1 1 480px; min-width:320px;">
+            <div class="card-head">
+              <h3>Today's plan</h3>
+              <span class="hint" id="todayCount">—</span>
+              <div class="spacer"></div>
+              <a class="btn btn-sm" href="./schedule.html">Manage</a>
+            </div>
+            <div id="taskList" class="task-list" aria-live="polite"></div>
+          </div>
+
+          <div class="card" style="flex:1 1 480px; min-width:320px;">
+            <div class="card-head">
+              <h3>Activity — last 365 days</h3>
+              <span class="hint">Completion-weighted</span>
+            </div>
+            <div class="heatmap-wrap">
+              <div class="heatmap" id="heatmap" role="grid" aria-label="Contribution heatmap"></div>
+            </div>
+            <div class="heatmap-legend">
+              <span>Less</span>
+              <span class="sw" data-level="0"></span>
+              <span class="sw" data-level="1"></span>
+              <span class="sw" data-level="2"></span>
+              <span class="sw" data-level="3"></span>
+              <span class="sw" data-level="4"></span>
+              <span>More</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="row wrap mt-3" style="align-items:flex-start;">
+          <div class="card" style="flex:1 1 520px; min-width:320px;">
+            <div class="card-head">
+              <h3>This week</h3>
+              <span class="hint">Completion % per day</span>
+            </div>
+            <svg class="chart" id="weekChart" viewBox="0 0 560 220" preserveAspectRatio="none" aria-label="Weekly completion chart"></svg>
+          </div>
+
+          <div class="card" style="flex:1 1 320px; min-width:280px;">
+            <div class="card-head">
+              <h3>Recent activity</h3>
+            </div>
+            <div class="feed" id="activityFeed" aria-live="polite"></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="./js/dashboard-page.js"></script>
+</body>
+</html>

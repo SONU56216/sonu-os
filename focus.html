@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Focus — SONU OS</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+  <link rel="stylesheet" href="./css/dashboard.css" />
+  <link rel="stylesheet" href="./css/responsive.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Primary">
+      <div class="brand">
+        <div class="logo">SO</div>
+        <div><div class="name">SONU OS</div><div class="sub">Productivity &amp; Performance</div></div>
+      </div>
+      <div class="nav-group-title">Workspace</div>
+      <a class="nav-link" data-nav="dashboard" href="./dashboard.html">Dashboard</a>
+      <a class="nav-link" data-nav="schedule" href="./schedule.html">Schedule</a>
+      <a class="nav-link" data-nav="analytics" href="./analytics.html">Analytics</a>
+      <a class="nav-link" data-nav="history" href="./history.html">History</a>
+      <a class="nav-link" data-nav="focus" href="./focus.html">Focus</a>
+      <div class="nav-group-title">Account</div>
+      <a class="nav-link" data-nav="profile" href="./profile.html">Profile</a>
+      <a class="nav-link" data-nav="settings" href="./settings.html">Settings</a>
+      <button class="nav-link" id="logoutBtn" type="button" style="text-align:left;width:100%;background:transparent;border:0;cursor:pointer;">Sign out</button>
+    </aside>
+   
+
+    <main class="main">
+      <header class="topbar">
+        <button class="hamburger" aria-label="Open menu">☰</button>
+        <div class="title">Focus</div>
+        <div class="spacer"></div>
+        <div class="net-status"><span class="net-dot"></span><span class="net-text">Online</span></div>
+        <div class="clock" data-clock></div>
+        <button class="btn btn-sm btn-ghost" id="themeBtn" type="button">Theme</button>
+      </header>
+
+      <div class="content">
+        <h1 class="mt-0">Focus Timer</h1>
+        <p class="muted">A Pomodoro session. Completed focus sessions are recorded and count toward your daily focus time.</p>
+
+        <section class="row wrap mt-3" style="align-items:flex-start;">
+          <div class="card" style="flex:1 1 420px; min-width:300px;">
+            <div class="timer-wrap">
+              <div class="timer-ring">
+                <svg viewBox="0 0 220 220">
+                  <circle class="track" cx="110" cy="110" r="98"></circle>
+                  <circle class="progress" id="ringProgress" cx="110" cy="110" r="98"
+                          stroke-dasharray="615.75" stroke-dashoffset="0"></circle>
+                </svg>
+                <div class="label">
+                  <div class="mmss" id="mmss">25:00</div>
+                  <div class="mode-label" id="modeLabel">Focus</div>
+                </div>
+              </div>
+            </div>
+            <div class="row gap-2" style="justify-content:center; margin-top:8px;">
+              <button class="btn btn-primary" id="startBtn" type="button">Start</button>
+              <button class="btn" id="pauseBtn" type="button">Pause</button>
+              <button class="btn" id="resetBtn" type="button">Reset</button>
+            </div>
+            <div class="field mt-2">
+              <label for="taskSelect">Attach to task (optional)</label>
+              <select id="taskSelect"><option value="">— none —</option></select>
+            </div>
+          </div>
+
+          <div class="card" style="flex:1 1 340px; min-width:280px;">
+            <div class="card-head"><h3>Today's focus</h3></div>
+            <div class="stat-grid">
+              <div class="stat green"><div class="label">Focused minutes</div><div class="value" id="focusToday">0m</div></div>
+              <div class="stat"><div class="label">Sessions</div><div class="value" id="sessionsToday">0</div></div>
+            </div>
+            <div class="card-head mt-2"><h3>Recent sessions</h3></div>
+            <div class="feed" id="sessionsFeed"></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="./js/focus-page.js"></script>
+</body>
+</html>

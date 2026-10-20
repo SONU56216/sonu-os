@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Settings — SONU OS</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+  <link rel="stylesheet" href="./css/dashboard.css" />
+  <link rel="stylesheet" href="./css/responsive.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Primary">
+      <div class="brand"><div class="logo">SO</div><div><div class="name">SONU OS</div><div class="sub">Productivity &amp; Performance</div></div></div>
+      <div class="nav-group-title">Workspace</div>
+      <a class="nav-link" data-nav="dashboard" href="./dashboard.html">Dashboard</a>
+      <a class="nav-link" data-nav="schedule" href="./schedule.html">Schedule</a>
+      <a class="nav-link" data-nav="analytics" href="./analytics.html">Analytics</a>
+      <a class="nav-link" data-nav="history" href="./history.html">History</a>
+      <a class="nav-link" data-nav="focus" href="./focus.html">Focus</a>
+      <div class="nav-group-title">Account</div>
+      <a class="nav-link" data-nav="profile" href="./profile.html">Profile</a>
+      <a class="nav-link" data-nav="settings" href="./settings.html">Settings</a>
+      <button class="nav-link" id="logoutBtn" type="button" style="text-align:left;width:100%;background:transparent;border:0;cursor:pointer;">Sign out</button>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="hamburger" aria-label="Open menu">☰</button>
+        <div class="title">Settings</div>
+        <div class="spacer"></div>
+        <div class="net-status"><span class="net-dot"></span><span class="net-text">Online</span></div>
+        <div class="clock" data-clock></div>
+        <button class="btn btn-sm btn-ghost" id="themeBtn" type="button">Theme</button>
+      </header>
+
+      <div class="content">
+        <h1 class="mt-0">Settings</h1>
+
+        <section class="row wrap mt-2" style="align-items:flex-start;">
+          <div class="card" style="flex:1 1 420px; min-width:300px;">
+            <div class="card-head"><h3>Preferences</h3></div>
+            <form id="prefsForm">
+              <div class="field">
+                <label for="themePref">Theme</label>
+                <select id="themePref"><option value="dark">Dark</option><option value="light">Light</option></select>
+              </div>
+              <div class="field">
+                <label for="timeFormat">Time format</label>
+                <select id="timeFormat"><option value="24">24-hour</option><option value="12">12-hour</option></select>
+              </div>
+              <div class="field">
+                <label for="weekStart">Week starts on</label>
+                <select id="weekStart"><option value="1">Monday</option><option value="0">Sunday</option></select>
+              </div>
+              <div class="field">
+                <label for="streakType">Streak rule</label>
+                <select id="streakType">
+                  <option value="anyTaskCompleted">At least one task completed</option>
+                  <option value="minPct50">Completion ≥ 50%</option>
+                  <option value="minPct80">Completion ≥ 80%</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <div class="field"><label for="focusMin">Focus (min)</label><input id="focusMin" type="number" min="1" max="180" /></div>
+                <div class="field"><label for="shortMin">Short break (min)</label><input id="shortMin" type="number" min="1" max="60" /></div>
+              </div>
+              <div class="form-row">
+                <div class="field"><label for="longMin">Long break (min)</label><input id="longMin" type="number" min="1" max="90" /></div>
+                <div class="field"><label for="longEvery">Long break every N focus</label><input id="longEvery" type="number" min="1" max="12" /></div>
+              </div>
+              <button class="btn btn-primary" type="submit">Save preferences</button>
+            </form>
+          </div>
+
+          <div class="card" style="flex:1 1 380px; min-width:280px;">
+            <div class="card-head"><h3>Data</h3></div>
+            <p class="muted">Export your task history as JSON or CSV.</p>
+            <div class="row gap-2" style="margin-bottom: 24px;">
+              <button class="btn" id="exportJsonBtn" type="button">Export JSON</button>
+              <button class="btn" id="exportCsvBtn" type="button">Export CSV</button>
+            </div>
+
+            <div class="card-head"><h3>Danger zone</h3></div>
+            <p class="muted">Deleting your account removes all your data. This cannot be undone.</p>
+            <button class="btn btn-danger" id="deleteAccountBtn" type="button">Delete my account and data</button>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="./js/settings-page.js"></script>
+</body>
+</html>

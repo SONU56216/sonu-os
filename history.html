@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>History — SONU OS</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+  <link rel="stylesheet" href="./css/dashboard.css" />
+  <link rel="stylesheet" href="./css/responsive.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Primary">
+      <div class="brand">
+        <div class="logo">SO</div>
+        <div><div class="name">SONU OS</div><div class="sub">Productivity &amp; Performance</div></div>
+      </div>
+      <div class="nav-group-title">Workspace</div>
+      <a class="nav-link" data-nav="dashboard" href="./dashboard.html">Dashboard</a>
+      <a class="nav-link" data-nav="schedule" href="./schedule.html">Schedule</a>
+      <a class="nav-link" data-nav="analytics" href="./analytics.html">Analytics</a>
+      <a class="nav-link" data-nav="history" href="./history.html">History</a>
+      <a class="nav-link" data-nav="focus" href="./focus.html">Focus</a>
+      <div class="nav-group-title">Account</div>
+      <a class="nav-link" data-nav="profile" href="./profile.html">Profile</a>
+      <a class="nav-link" data-nav="settings" href="./settings.html">Settings</a>
+      <button class="nav-link" id="logoutBtn" type="button" style="text-align:left;width:100%;background:transparent;border:0;cursor:pointer;">Sign out</button>
+    </aside>
+   
+
+    <main class="main">
+      <header class="topbar">
+        <button class="hamburger" aria-label="Open menu">☰</button>
+        <div class="title">History</div>
+        <div class="spacer"></div>
+        <div class="net-status"><span class="net-dot"></span><span class="net-text">Online</span></div>
+        <div class="clock" data-clock></div>
+        <button class="btn btn-sm btn-ghost" id="themeBtn" type="button">Theme</button>
+      </header>
+
+      <div class="content">
+        <div class="row items-center wrap" style="gap:12px;">
+          <h1 class="mt-0">History</h1>
+          <div class="spacer"></div>
+          <div class="row gap-2">
+            <button class="btn" id="prevMonthBtn" type="button">← Prev</button>
+            <div id="monthLabel" class="mono" style="min-width:160px;text-align:center;"></div>
+            <button class="btn" id="nextMonthBtn" type="button">Next →</button>
+          </div>
+        </div>
+
+        <section class="row wrap mt-3" style="align-items:flex-start;">
+          <div class="card" style="flex:1 1 520px; min-width:320px;">
+            <div class="card-head"><h3>Calendar</h3><span class="hint">Click any day to view details</span></div>
+            <div class="cal" id="cal"></div>
+          </div>
+          <div class="card" style="flex:1 1 420px; min-width:300px;">
+            <div class="card-head"><h3 id="detailTitle">Select a day</h3><span class="hint" id="detailHint"></span></div>
+            <div id="detailBody"></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="./js/history-page.js"></script>
+</body>
+</html>

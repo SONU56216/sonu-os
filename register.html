@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Create account — SONU OS</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+  <link rel="stylesheet" href="./css/responsive.css" />
+</head>
+<body>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="brand">
+        <div class="logo">SO</div>
+        <div>
+          <div class="name">SONU OS</div>
+          <div class="sub">Create your workspace</div>
+        </div>
+      </div>
+      <h1>Create account</h1>
+      <p class="lede">Your data is private and visible only to you.</p>
+
+      <div id="formError" class="form-error hidden" role="alert"></div>
+
+      <form id="registerForm" novalidate>
+        <div class="field">
+          <label for="name">Display name</label>
+          <input id="name" type="text" autocomplete="name" required minlength="2" maxlength="60" />
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" type="email" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" type="password" autocomplete="new-password" required minlength="8" />
+          <div class="hint">At least 8 characters.</div>
+        </div>
+        <div class="field">
+          <label for="password2">Confirm password</label>
+          <input id="password2" type="password" autocomplete="new-password" required minlength="8" />
+        </div>
+        <button id="submitBtn" class="btn btn-primary" type="submit" style="width:100%;justify-content:center;">
+          Create account
+        </button>
+      </form>
+
+      <p class="auth-foot">Already have an account? <a href="./login.html">Sign in</a></p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { auth, db, isFirebaseConfigMissing } from "./js/firebase.js";
+    import { toast } from "./js/ui.js";
+    import { createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const form = document.getElementById("registerForm");
+    const errBox = document.getElementById("formError");
+    const btn = document.getElementById("submitBtn");
+
+    if (isFirebaseConfigMissing()) {
+      errBox.textContent = "Firebase is not configured yet. Edit js/firebase-config.js.";
+      errBox.classList.remove("hidden");
+      btn.disabled = true;
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errBox.classList.add("hidden");
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const p1 = form.password.value, p2 = form.password2.value;
+      if (p1 !== p2) { errBox.textContent = "Passwords do not match."; errBox.classList.remove("hidden"); return; }
+      if (name.length < 2) { errBox.textContent = "Please enter your name."; errBox.classList.remove("hidden"); return; }
+
+      btn.disabled = true; btn.textContent = "Creating…";
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, email, p1);
+        await updateProfile(cred.user, { displayName: name });
+        // Create the user profile document (subcollections will follow).
+        await setDoc(doc(db, "users", cred.user.uid), {
+          displayName: name,
+          photoURL: "",
+          intro: "",
+          goals: "",
+          theme: "dark",
+          timeFormat: "24",
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
+          weekStart: 1,
+          streakRule: { type: "anyTaskCompleted" },
+          focusDurations: { focus: 25, shortBreak: 5, longBreak: 15, longEvery: 4 },
+          notifications: { toastOnComplete: true },
+          totalTasksCompleted: 0,
+          totalFocusMinutes: 0,
+          currentStreak: 0,
+          longestStreak: 0,
+          lastActiveDate: null,
+          createdAt: serverTimestamp(),
+        });
+        location.replace("./dashboard.html");
+      } catch (err) {
+        errBox.textContent = friendlyAuthError(err);
+        errBox.classList.remove("hidden");
+      } finally {
+        btn.disabled = false; btn.textContent = "Create account";
+      }
+    });
+
+    function friendlyAuthError(err) {
+      const code = err?.code || "";
+      const map = {
+        "auth/email-already-in-use": "That email is already registered.",
+        "auth/invalid-email": "That email address doesn't look valid.",
+        "auth/weak-password": "Password is too weak. Use at least 8 characters.",
+        "auth/network-request-failed": "Network error. Check your connection.",
+      };
+      return map[code] || err?.message || "Registration failed.";
+    }
+  </script>
+</body>
+</html>

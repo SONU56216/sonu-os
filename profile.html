@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Profile — SONU OS</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+  <link rel="stylesheet" href="./css/dashboard.css" />
+  <link rel="stylesheet" href="./css/responsive.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Primary">
+      <div class="brand"><div class="logo">SO</div><div><div class="name">SONU OS</div><div class="sub">Productivity &amp; Performance</div></div></div>
+      <div class="nav-group-title">Workspace</div>
+      <a class="nav-link" data-nav="dashboard" href="./dashboard.html">Dashboard</a>
+      <a class="nav-link" data-nav="schedule" href="./schedule.html">Schedule</a>
+      <a class="nav-link" data-nav="analytics" href="./analytics.html">Analytics</a>
+      <a class="nav-link" data-nav="history" href="./history.html">History</a>
+      <a class="nav-link" data-nav="focus" href="./focus.html">Focus</a>
+      <div class="nav-group-title">Account</div>
+      <a class="nav-link" data-nav="profile" href="./profile.html">Profile</a>
+      <a class="nav-link" data-nav="settings" href="./settings.html">Settings</a>
+      <button class="nav-link" id="logoutBtn" type="button" style="text-align:left;width:100%;background:transparent;border:0;cursor:pointer;">Sign out</button>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="hamburger" aria-label="Open menu">☰</button>
+        <div class="title">Profile</div>
+        <div class="spacer"></div>
+        <div class="net-status"><span class="net-dot"></span><span class="net-text">Online</span></div>
+        <div class="clock" data-clock></div>
+        <button class="btn btn-sm btn-ghost" id="themeBtn" type="button">Theme</button>
+      </header>
+
+      <div class="content">
+        <h1 class="mt-0">Profile</h1>
+        <section class="row wrap mt-2" style="align-items:flex-start;">
+          <div class="card" style="flex:1 1 420px; min-width:300px;">
+            <div class="card-head"><h3>Your details</h3></div>
+            <form id="profileForm">
+              <div class="field"><label for="displayName">Display name</label><input id="displayName" type="text" maxlength="60" required /></div>
+              <div class="field"><label for="photoURL">Profile photo URL (optional)</label><input id="photoURL" type="url" placeholder="https://…" /></div>
+              <div class="field"><label for="intro">Short introduction</label><textarea id="intro" maxlength="400"></textarea></div>
+              <div class="field"><label for="goals">Current goals</label><textarea id="goals" maxlength="400"></textarea></div>
+              <button class="btn btn-primary" type="submit" id="saveProfileBtn">Save changes</button>
+            </form>
+          </div>
+
+          <div class="card" style="flex:1 1 380px; min-width:280px;">
+            <div class="card-head"><h3>Lifetime stats</h3></div>
+            <div class="stat-grid">
+              <div class="stat green"><div class="label">Tasks completed</div><div class="value" id="pTotalTasks">0</div></div>
+              <div class="stat"><div class="label">Focused time</div><div class="value" id="pTotalFocus">0m</div></div>
+              <div class="stat"><div class="label">Current streak</div><div class="value" id="pStreak">0</div></div>
+              <div class="stat"><div class="label">Longest streak</div><div class="value" id="pLongest">0</div></div>
+              <div class="stat"><div class="label">Member since</div><div class="value" id="pSince" style="font-size:1rem;">—</div></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="./js/profile-page.js"></script>
+</body>
+</html>
